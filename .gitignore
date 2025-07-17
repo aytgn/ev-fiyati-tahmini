@@ -1,0 +1,15 @@
+# Sanal ortam klasörünü görmezden gel
+venv/
+
+# Python'un oluşturduğu ara bellek dosyaları
+__pycache__/
+*.pyc
+
+# Eğitilmiş model dosyası.
+# Genellikle büyük model dosyaları depoya eklenmez.
+# Bizimki küçük olsa da bu iyi bir alışkanlıktır.
+*.joblib
+
+# IDE'ye özel ayar dosyaları (isteğe bağlı)
+.vscode/
+.idea/
