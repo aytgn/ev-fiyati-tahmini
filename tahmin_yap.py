@@ -6,25 +6,24 @@ model_dosyasi = 'ev_fiyati_modeli.joblib'
 yuklenen_model = joblib.load(model_dosyasi)
 print(f"'{model_dosyasi}' dosyasından model yüklendi.")
 
-# 2. Tahmin yapmak için yeni bir ev verisi oluştur
-# ÖNEMLİ: Veri, modelin eğitildiği formatla BİREBİR aynı olmalı.
-# Yani aynı sütun adları ve aynı sırada olmalı.
-yeni_ev_verisi = {
-    'Metrekare': [140],  # Değerleri bir liste içinde verdiğimize dikkat edin
-    'OdaSayisi': [3],
-    'BinaYasi': [1]
+# 2. Tahmin yapmak için YENİ ev verileri oluştur
+yeni_evler_verisi = {
+    'Metrekare': [140, 80, 210, 165],
+    'OdaSayisi': [3, 2, 5, 4],
+    'BinaYasi':  [1, 12, 0, 3]
 }
 
 # Veriyi pandas DataFrame'ine dönüştür
-yeni_ev_df = pd.DataFrame(yeni_ev_verisi)
-print("\nTahmin yapılacak yeni ev özellikleri:")
-print(yeni_ev_df)
+yeni_evler_df = pd.DataFrame(yeni_evler_verisi)
+print("\nTahmin yapılacak yeni evlerin özellikleri:")
+print(yeni_evler_df)
 
-# 3. Fiyat tahmini yap
-# .predict() metodu her zaman bir liste/dizi döndürür.
-# Tek bir tahmin yaptığımız için sonucun ilk elemanını ([0]) alıyoruz.
-tahmin_edilen_fiyat = yuklenen_model.predict(yeni_ev_df)[0]
+# 3. Fiyat tahminlerini yap
+tahminler = yuklenen_model.predict(yeni_evler_df)
 
-# 4. Sonucu ekrana yazdır
-print("\n--- TAHMİN SONUCU ---")
-print(f"Bu özelliklerdeki bir evin tahmini fiyatı: {tahmin_edilen_fiyat:.2f} TL")
+# 4. Sonuçları daha anlaşılır bir şekilde ekrana yazdır
+print("\n--- TAHMİN SONUÇLARI ---")
+for i in range(len(yeni_evler_df)):
+    ev_ozellikleri = yeni_evler_df.iloc[i]
+    tahmin_fiyat = tahminler[i]
+    print(f"Ev {i+1} ({ev_ozellikleri['Metrekare']}m², {ev_ozellikleri['OdaSayisi']} oda, {ev_ozellikleri['BinaYasi']} yaş) -> Tahmini Fiyat: {tahmin_fiyat:.2f} TL")
